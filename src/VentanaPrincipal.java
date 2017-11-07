@@ -22,9 +22,10 @@ public class VentanaPrincipal {
 	JPanel panelEmpezar;
 	JPanel panelPuntuacion;
 	JPanel panelJuego;
-	JLabel mostrarValorBoton;
-
-	ControlJuego control;
+	int mina;
+	int contadorPuntos = 0;
+	int contadorMinas = 0;
+	VentanaPrincipal ventanaInstancia = this;
 
 	// Todos los botones se meten en un panel independiente.
 	// Hacemos esto para que podamos cambiar después los componentes por otros
@@ -143,7 +144,7 @@ public class VentanaPrincipal {
 
 		for (int i = 0; i < botonesJuego.length; i++) {
 			for (int j = 0; j < botonesJuego[i].length; j++) {
-				botonesJuego[i][j].addActionListener(new ActionBoton(this, i, j));
+				botonesJuego[i][j].addActionListener(new ActionBoton(ventanaInstancia, i, j));
 			}
 		}
 	}
@@ -163,33 +164,21 @@ public class VentanaPrincipal {
 	 */
 	public void mostrarNumMinasAlrededor(int i, int j) {
 
-		// Poner color al label en este metodo
-		int mina = control.getMinasAlrededor(i, j);// esto devuelve un numero que son las minas que hay alrededor de esa
-													// posicion
-		System.out.println("valor de la mina " + mina);
-		mostrarValorBoton = new JLabel("" + mina);
-		panelesJuego[i][j].removeAll();
-		panelesJuego[i][j].add(mostrarValorBoton);
-		switch (mina) {
-		case 0:
-			panelesJuego[i][j].setBackground(Color.BLACK);
-			break;
-		case 1:
-			panelesJuego[i][j].setBackground(Color.CYAN);
-			break;
-		case 2:
-			panelesJuego[i][j].setBackground(Color.GREEN);
-			break;
-		case 3:
-			panelesJuego[i][j].setBackground(Color.ORANGE);
-			break;
-		case 4:
-			panelesJuego[i][j].setBackground(Color.RED);
-			break;
-
-		default:
-			break;
+		if (juego.abrirCasilla(i, j)) {
+			contadorMinas++;
 		}
+
+		// Poner color al label en este metodo
+		mina = juego.getMinasAlrededor(i, j);// esto devuelve un numero que son las minas que hay alrededor de esa
+		JLabel sustituto;
+		sustituto = new JLabel();
+		sustituto.setText(Integer.toString(mina));
+		// sustituto.setForeground(Color.WHITE);
+		botonesJuego[i][j].removeAll();
+		refrescarPantalla();
+		panelesJuego[i][j].add(sustituto);
+		// panelesJuego[i][j].setBackground(correspondenciaColores[mina]);
+		refrescarPantalla();
 
 	}
 
@@ -203,14 +192,31 @@ public class VentanaPrincipal {
 	 *       juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
-		// TODO
+
+		if (porExplosion) {
+
+		}
+		juego.esFinJuego();
 	}
 
 	/**
 	 * Método que muestra la puntuación por pantalla.
 	 */
 	public void actualizarPuntuacion() {
-		// TODO
+		JLabel puntos = new JLabel();
+		panelPuntuacion.setLayout(new GridBagLayout());
+		if (mina != -1) {
+			// contadorMinas++;
+			contadorPuntos++;
+			panelPuntuacion.removeAll();
+			refrescarPantalla();
+			puntos.setText(Integer.toString(contadorPuntos));
+			panelPuntuacion.add(puntos);
+
+		} else {
+			JOptionPane.showMessageDialog(ventana, "Boom!!! Has perdido");
+		}
+
 	}
 
 	/**

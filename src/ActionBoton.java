@@ -26,7 +26,8 @@ public class ActionBoton implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ventanaPrincipal.mostrarNumMinasAlrededor(i, j);
+		ventanaPrincipal.mostrarNumMinasAlrededor(i, j);//accedemos al metodo con los parametros de i, j
+		ventanaPrincipal.actualizarPuntuacion();
 		ventanaPrincipal.refrescarPantalla();
 	}
 

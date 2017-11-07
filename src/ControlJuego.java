@@ -55,7 +55,6 @@ public class ControlJuego {
 
 		}
 		depurarTablero();
-		System.out.println("colocar bombas");
 
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
@@ -130,6 +129,7 @@ public class ControlJuego {
 	 *         minas.
 	 **/
 	public boolean esFinJuego() {
+		
 	}
 
 	/**
@@ -159,7 +159,8 @@ public class ControlJuego {
 	 * @return Un entero que representa el número de minas alrededor de la celda
 	 */
 	public int getMinasAlrededor(int i, int j) {
-		return tablero[i][j];
+		int mina=tablero[i][j];
+		return mina;
 	}
 
 	/**
@@ -168,6 +169,7 @@ public class ControlJuego {
 	 * @return Un entero con la puntuación actual
 	 */
 	public int getPuntuacion() {
+		
 	}
 
 }
