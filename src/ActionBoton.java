@@ -14,11 +14,12 @@ public class ActionBoton implements ActionListener {
 	int i;
 	int j;
 	VentanaPrincipal ventanaPrincipal;
+	ControlJuego juego;
 
 	public ActionBoton(VentanaPrincipal ventanaPrincipal, int i, int j) {
 		this.i = i;
 		this.j = j;
-		this.ventanaPrincipal=ventanaPrincipal;
+		this.ventanaPrincipal = ventanaPrincipal;
 	}
 
 	/**
@@ -26,9 +27,19 @@ public class ActionBoton implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ventanaPrincipal.mostrarNumMinasAlrededor(i, j);//accedemos al metodo con los parametros de i, j
-		ventanaPrincipal.actualizarPuntuacion();
-		ventanaPrincipal.refrescarPantalla();
+		if (ventanaPrincipal.getJuego().abrirCasilla(i, j)) {
+			ventanaPrincipal.mostrarNumMinasAlrededor(i, j);// accedemos al metodo con los parametros de i, j
+			ventanaPrincipal.actualizarPuntuacion();
+			ventanaPrincipal.refrescarPantalla();
+
+			if (ventanaPrincipal.getJuego().esFinJuego()) {// comprueba si la puntuación es la máxima
+				ventanaPrincipal.mostrarFinJuego(false);// es la máxima, entonces has desactivado todas las bombas
+			}
+			if (ventanaPrincipal.getJuego().getMinasAlrededor(i, j) == -1) {
+				ventanaPrincipal.mostrarFinJuego(true);
+			}
+		}
+
 	}
 
 }

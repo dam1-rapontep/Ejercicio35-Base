@@ -22,6 +22,7 @@ public class VentanaPrincipal {
 	JPanel panelEmpezar;
 	JPanel panelPuntuacion;
 	JPanel panelJuego;
+	JLabel puntos;
 	int mina;
 	int contadorPuntos = 0;
 	int contadorMinas = 0;
@@ -33,7 +34,7 @@ public class VentanaPrincipal {
 	JButton[][] botonesJuego;
 
 	// Correspondencia de colores para las minas:
-	Color correspondenciaColores[] = { Color.BLACK, Color.CYAN, Color.GREEN, Color.ORANGE, Color.RED, Color.RED,
+	static Color correspondenciaColores[] = { Color.BLACK, Color.CYAN, Color.GREEN, Color.ORANGE, Color.RED, Color.RED,
 			Color.RED, Color.RED, Color.RED, Color.RED };
 
 	JButton botonEmpezar;
@@ -147,6 +148,20 @@ public class VentanaPrincipal {
 				botonesJuego[i][j].addActionListener(new ActionBoton(ventanaInstancia, i, j));
 			}
 		}
+
+		botonEmpezar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ventana.dispose();
+				ventana = new JFrame();
+				ventana.setBounds(100, 100, 700, 500);
+				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				juego = new ControlJuego();
+				inicializar();
+
+			}
+		});
 	}
 
 	/**
@@ -164,21 +179,30 @@ public class VentanaPrincipal {
 	 */
 	public void mostrarNumMinasAlrededor(int i, int j) {
 
-		if (juego.abrirCasilla(i, j)) {
-			contadorMinas++;
-		}
-
-		// Poner color al label en este metodo
 		mina = juego.getMinasAlrededor(i, j);// esto devuelve un numero que son las minas que hay alrededor de esa
-		JLabel sustituto;
-		sustituto = new JLabel();
+		JLabel sustituto = new JLabel();
+		sustituto.setForeground(Color.WHITE);
 		sustituto.setText(Integer.toString(mina));
-		// sustituto.setForeground(Color.WHITE);
-		botonesJuego[i][j].removeAll();
+		sustituto.setHorizontalAlignment(SwingConstants.CENTER);
+		panelesJuego[i][j].removeAll();
 		refrescarPantalla();
 		panelesJuego[i][j].add(sustituto);
-		// panelesJuego[i][j].setBackground(correspondenciaColores[mina]);
+		panelesJuego[i][j].setBackground(aplicarColores(mina));
 		refrescarPantalla();
+
+	}
+
+	/*
+	 * metodo que devuelve el color asignado a un label seg�n sea mina o no
+	 */
+	public static Color aplicarColores(int mina) {
+
+		if (mina == -1) {
+			return Color.WHITE;
+
+		} else {
+			return correspondenciaColores[mina];
+		}
 
 	}
 
@@ -191,19 +215,26 @@ public class VentanaPrincipal {
 	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el
 	 *       juego.
 	 */
-	public void mostrarFinJuego(boolean porExplosion) {
-
-		if (porExplosion) {
-
+	public void mostrarFinJuego(boolean formaPerder) {
+		if (formaPerder) {
+			JOptionPane.showMessageDialog(ventana, "Boom!! Has perdido");
+			// for que recorre los botones del tablero y los desactiva
+			for (int i = 0; i < botonesJuego.length; i++) {
+				for (int j = 0; j < botonesJuego.length; j++) {
+					botonesJuego[i][j].setEnabled(false);
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(ventana, "Enhorabuena!! Has desactivado todas las bombas");
 		}
-		juego.esFinJuego();
+
 	}
 
 	/**
 	 * Método que muestra la puntuación por pantalla.
 	 */
 	public void actualizarPuntuacion() {
-		JLabel puntos = new JLabel();
+		puntos = new JLabel();
 		panelPuntuacion.setLayout(new GridBagLayout());
 		if (mina != -1) {
 			// contadorMinas++;
@@ -213,10 +244,7 @@ public class VentanaPrincipal {
 			puntos.setText(Integer.toString(contadorPuntos));
 			panelPuntuacion.add(puntos);
 
-		} else {
-			JOptionPane.showMessageDialog(ventana, "Boom!!! Has perdido");
 		}
-
 	}
 
 	/**

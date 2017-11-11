@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 import org.omg.IOP.Codec;
 
 /**
@@ -17,9 +19,9 @@ public class ControlJuego {
 	private final static int MINA = -1;
 	final int MINAS_INICIALES = 20;
 	final int LADO_TABLERO = 10;
-
+	int contadorNoMinas = 0;
 	private int[][] tablero;
-	private int puntuacion;
+	private int puntuacion = 0;
 
 	public ControlJuego() {
 		// Creamos el tablero:
@@ -42,7 +44,7 @@ public class ControlJuego {
 		Random randomI = new Random();
 		Random randomJ = new Random();
 		int minas;
-		
+
 		for (int i = 0; i < MINAS_INICIALES; i++) {
 			int fila = randomI.nextInt(10);
 			int columna = randomJ.nextInt(10);
@@ -111,14 +113,28 @@ public class ControlJuego {
 	 * @return : Verdadero si no ha explotado una mina. Falso en caso contrario.
 	 */
 	public boolean abrirCasilla(int i, int j) {
+
+		/*if (tablero[i][j] != -1) {
+			puntuacion++;
+			return true;
+
+		}*/
+		
+		
+		// si lo hago de esta manera si me pinta la mina de blanco
 		for (int i2 = 0; i2 < tablero.length; i2++) {
 			for (int k = 0; k < tablero[i2].length; k++) {
-				if (tablero[i2][k] == -1) {
+				if (tablero[i2][k] != -1) {
+					puntuacion++;
 					return true;
 				}
+				
 			}
+			
 		}
+
 		return false;
+
 	}
 
 	/**
@@ -129,7 +145,12 @@ public class ControlJuego {
 	 *         minas.
 	 **/
 	public boolean esFinJuego() {
-		
+
+		if (puntuacion == MINAS_INICIALES) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -159,7 +180,7 @@ public class ControlJuego {
 	 * @return Un entero que representa el número de minas alrededor de la celda
 	 */
 	public int getMinasAlrededor(int i, int j) {
-		int mina=tablero[i][j];
+		int mina = tablero[i][j];
 		return mina;
 	}
 
@@ -169,7 +190,7 @@ public class ControlJuego {
 	 * @return Un entero con la puntuación actual
 	 */
 	public int getPuntuacion() {
-		
+
 	}
 
 }
