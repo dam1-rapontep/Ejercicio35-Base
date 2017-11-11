@@ -2,10 +2,16 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,8 +31,9 @@ public class VentanaPrincipal {
 	JLabel puntos;
 	int mina;
 	int contadorPuntos = 0;
-	int contadorMinas = 0;
 	VentanaPrincipal ventanaInstancia = this;
+	ImageIcon icono;
+	JLabel imagenMina;
 
 	// Todos los botones se meten en un panel independiente.
 	// Hacemos esto para que podamos cambiar despu√©s los componentes por otros
@@ -59,6 +66,7 @@ public class VentanaPrincipal {
 
 		// Inicializamos componentes
 		panelImagen = new JPanel();
+		panelImagen.setLayout(new GridLayout(1,1));
 		panelEmpezar = new JPanel();
 		panelEmpezar.setLayout(new GridLayout(1, 1));
 		panelPuntuacion = new JPanel();
@@ -135,6 +143,25 @@ public class VentanaPrincipal {
 		panelEmpezar.add(botonEmpezar);
 		panelPuntuacion.add(pantallaPuntuacion);
 
+		// Panel imagen
+		BufferedImage imagen = null;
+		imagenMina = new JLabel();
+		
+		try {
+			imagen = ImageIO.read(new File("D:\\Escritorio\\2∫ DAM\\Desarrollo de interfaces\\TEMA 2\\imagenBusca.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		icono=new ImageIcon(imagen.getScaledInstance(50,50, Image.SCALE_SMOOTH));
+		imagenMina.setIcon(icono);
+		imagenMina.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		settings = new GridBagConstraints();
+		settings.gridx=0;
+		settings.gridy=0;
+		panelImagen.add(imagenMina,settings);
 	}
 
 	/**
@@ -158,6 +185,7 @@ public class VentanaPrincipal {
 				ventana.setBounds(100, 100, 700, 500);
 				ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				juego = new ControlJuego();
+				contadorPuntos=0;
 				inicializar();
 
 			}
@@ -218,12 +246,16 @@ public class VentanaPrincipal {
 	public void mostrarFinJuego(boolean formaPerder) {
 		if (formaPerder) {
 			JOptionPane.showMessageDialog(ventana, "Boom!! Has perdido");
+			
 			// for que recorre los botones del tablero y los desactiva
 			for (int i = 0; i < botonesJuego.length; i++) {
 				for (int j = 0; j < botonesJuego.length; j++) {
 					botonesJuego[i][j].setEnabled(false);
 				}
 			}
+			JOptionPane.showMessageDialog(ventana, "PuntuaciÛn "+(getJuego().getPuntuacion()-1)+"\nPara iniciar otra partida pulse GO");
+			
+			
 		} else {
 			JOptionPane.showMessageDialog(ventana, "Enhorabuena!! Has desactivado todas las bombas");
 		}
@@ -237,7 +269,6 @@ public class VentanaPrincipal {
 		puntos = new JLabel();
 		panelPuntuacion.setLayout(new GridBagLayout());
 		if (mina != -1) {
-			// contadorMinas++;
 			contadorPuntos++;
 			panelPuntuacion.removeAll();
 			refrescarPantalla();

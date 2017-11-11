@@ -114,13 +114,6 @@ public class ControlJuego {
 	 */
 	public boolean abrirCasilla(int i, int j) {
 
-		/*if (tablero[i][j] != -1) {
-			puntuacion++;
-			return true;
-
-		}*/
-		
-		
 		// si lo hago de esta manera si me pinta la mina de blanco
 		for (int i2 = 0; i2 < tablero.length; i2++) {
 			for (int k = 0; k < tablero[i2].length; k++) {
@@ -128,11 +121,11 @@ public class ControlJuego {
 					puntuacion++;
 					return true;
 				}
-				
+				puntuacion--;
 			}
 			
 		}
-
+		
 		return false;
 
 	}
@@ -190,7 +183,7 @@ public class ControlJuego {
 	 * @return Un entero con la puntuación actual
 	 */
 	public int getPuntuacion() {
-
+		return puntuacion;
 	}
 
 }
