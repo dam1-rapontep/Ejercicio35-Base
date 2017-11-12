@@ -31,7 +31,7 @@ public class VentanaPrincipal {
 	JLabel puntos;
 	int mina;
 	int contadorPuntos = 0;
-	VentanaPrincipal ventanaInstancia = this;
+	VentanaPrincipal ventanaInstancia = this; //Instancia necesaria para pasarla a los listener
 	ImageIcon icono;
 	JLabel imagenMina;
 

@@ -44,16 +44,20 @@ public class ControlJuego {
 		Random randomI = new Random();
 		Random randomJ = new Random();
 		int minas;
-
+		
+		int fila = randomI.nextInt(LADO_TABLERO);
+		int columna = randomJ.nextInt(LADO_TABLERO);
+		
 		for (int i = 0; i < MINAS_INICIALES; i++) {
-			int fila = randomI.nextInt(10);
-			int columna = randomJ.nextInt(10);
-			if (tablero[fila][columna] == -1) {
-				fila = randomI.nextInt(10);
-				columna = randomJ.nextInt(10);
+
+			if (tablero[fila][columna] == 0) {
 				tablero[fila][columna] = -1;
+			}else {
+				fila = randomI.nextInt(LADO_TABLERO);
+				columna = randomJ.nextInt(LADO_TABLERO);
+				i--;
+				
 			}
-			tablero[fila][columna] = -1;
 
 		}
 		depurarTablero();
@@ -123,9 +127,9 @@ public class ControlJuego {
 				}
 				puntuacion--;
 			}
-			
+
 		}
-		
+
 		return false;
 
 	}

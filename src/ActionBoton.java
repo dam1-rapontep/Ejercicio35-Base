@@ -14,7 +14,6 @@ public class ActionBoton implements ActionListener {
 	int i;
 	int j;
 	VentanaPrincipal ventanaPrincipal;
-	ControlJuego juego;
 
 	public ActionBoton(VentanaPrincipal ventanaPrincipal, int i, int j) {
 		this.i = i;
